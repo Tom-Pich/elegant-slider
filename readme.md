@@ -1,6 +1,5 @@
-┌─────────────────────────────┐  
-| Easy slider generator v 0.1 |  
-└─────────────────────────────┘  
+<h1>Elegant Slider v0.1</h1>
+
 This JS/CSS module will generate a slider based on a given div parent node.
 Each first child of the parent will be displayed as a slide
 
@@ -11,7 +10,7 @@ STEPS :
 • node is the parent node of the slider
 • options is on object with the following element. If not given to the function, it will use default values.
 
-options = {
+options = {  
 	✅ width:			slider width (string. Every CSS units are valid, default = 100%),  
 	✅ height:			slider height in % of width (number. Default = 56.25. if 0, height will fit content),  
 	❌ animation:		translate or fade (string. Defaut = "translate"),  
