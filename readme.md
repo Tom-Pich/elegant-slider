@@ -1,6 +1,6 @@
-┌─────────────────────────────┐
-| Easy slider generator v 0.1 |
-└─────────────────────────────┘
+┌─────────────────────────────┐  
+| Easy slider generator v 0.1 |  
+└─────────────────────────────┘  
 This JS/CSS module will generate a slider based on a given div parent node.
 Each first child of the parent will be displayed as a slide
 
