@@ -8,35 +8,45 @@ class Slider{
 			this.animation = options.animation == "fade" ? "fade" : "translate";
 			this.animationTiming = options.animationTiming || 500;
 			this.pauseTiming = options.pauseTiming || 0;
-			this.position = options.initialPosition || 0;
-			this.infiniteCycles = options.infiniteCycles || false;
+			this.position = parseInt(options.initialPosition) || 0;
+			this.infiniteCycle = options.infiniteCycle || false;
+			this.showArrows = options.showArrows ?? true;
+			this.showDots = options.showDots === undefined ? true : options.showDots;
 
 			this.length = this.wrapper.children.length;
-			this._pxWidth = this.wrapper.getBoundingClientRect().width;
-			this._pxHeight = this.height ? this._pxWidth*this.height/100 : "" ;
 			this.children = Array.from(this.wrapper.children);
 			this.slidesTape = document.createElement("div");
+
+			this.wrapper.addEventListener("touchstart", e => this.touchesX = e.touches[0].pageX)
+			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this))
+			this.touchesX = 0
 		}
-		catch(e){console.warn("Please select a valid node")}
+		catch(e){console.warn("Please select a valid node"); console.log(e)}
 	}
 	
 	buildSliderFrame(){
 
 		// Style Attributes of slider wrapper
 		this.wrapper.classList.add("sliderWrapper");
-		this.wrapper.style = `width: ${this.width}; height: ${this._pxHeight}px`
+		this.wrapper.style.width = this.width;
+		this._pxWidth = this.wrapper.getBoundingClientRect().width;
+		this._pxHeight = this.height ? this._pxWidth*this.height/100 : "" ;
+		//if(!this._pxHeight && this.animation === "fade"){this._pxHeight = "250"}
+		this.wrapper.style.height = `${this._pxHeight}px`
 		if(!["relative", "absolute", "fixed"].includes(getComputedStyle(this.wrapper).position)){this.wrapper.style.position = "relative"}
 
 		// Create slidesTape that contains all slides
 		this.slidesTape = document.createElement("div");
 		this.slidesTape.className = "slidesTape";
 		this.slidesTape.style.transitionDuration = this.animationTiming + "ms";
+		if(this.animation === "fade"){this.slidesTape.classList.add("opacity-transition")}
 
 		// Wrap each firstchild element in a div.slide element
 		this.children.forEach( slide => {
 			let slideWrapper = document.createElement("div");
 			slideWrapper.classList = "slide";
 			slideWrapper.append(slide);
+			if(this.animation === "fade"){slideWrapper.style.transitionDuration = this.animationTiming + "ms"}
 			this.slidesTape.appendChild(slideWrapper)
 		})
 
@@ -45,43 +55,77 @@ class Slider{
 	}
 
 	generateCommands(){
-		this.previousButton = document.createElement("div")
-		this.previousButton.classList = "sliderButton previous";
-		this.previousButton.innerHTML = "&#x2039;"
-		this.previousButton.addEventListener("click", () => this.showSlide(this.position-1))
-		this.wrapper.appendChild(this.previousButton)
-		
-		this.nextButton = document.createElement("div")
-		this.nextButton.classList = "sliderButton next";
-		this.nextButton.innerHTML = "&#x203A;"
-		this.nextButton.addEventListener("click", () => this.showSlide(this.position+1))
-		this.wrapper.appendChild(this.nextButton)
+		if(this.showArrows){
+			this.previousButton = document.createElement("div")
+			this.previousButton.classList = "sliderButton previous";
+			this.previousButton.innerHTML = "&#x2039;"
+			this.previousButton.addEventListener("click", () => this.showSlide(this.position-1))
+			this.wrapper.appendChild(this.previousButton)
+			
+			this.nextButton = document.createElement("div")
+			this.nextButton.classList = "sliderButton next";
+			this.nextButton.innerHTML = "&#x203A;"
+			this.nextButton.addEventListener("click", () => this.showSlide(this.position+1))
+			this.wrapper.appendChild(this.nextButton)
+		}
+
+		if(this.showDots){
+			this.dotLine = document.createElement("div")
+			this.dotLine.className = "slideDotLine"
+			for (let i = 0 ; i < this.length ; i++){
+				let dot = document.createElement("span")
+				dot.innerText = "○"
+				dot.addEventListener("click", () =>{this.showSlide(i)})
+				this.dotLine.appendChild(dot)
+				}
+			this.wrapper.appendChild(this.dotLine)
+		}
 
 		this.updateCommands()
 	}
 
 	updateCommands(){
-		if(!this.infiniteCycles){
+		if(!this.infiniteCycle){
 			this.previousButton.style.opacity = !this.position ? 0:1;
 			this.nextButton.style.opacity = !!(this.position == this.length-1) ? 0:1
+		}
+
+		if(this.showDots){
+			Array.from(this.dotLine.children).forEach(dot => dot.innerText = "○")
+			try{this.dotLine.children[this.position].innerHTML="&#x25CF;"}
+			catch(e){}
 		}
 	}
 
 	showSlide(x){
 		this.position = x;
-		if(!this.infiniteCycles){
+		if(!this.infiniteCycle){
 			this.position = Math.min(this.position, this.length-1);
 			this.position = Math.max(this.position, 0)
 		}
-		if (this.position > this.length-1){this.quickMoveToFirst()}
-		if (this.position < 0){this.quickMoveToLast()}
-		console.log(this.position)
-		console.log(this._pxWidth)
-		this.slidesTape.style.transform = `translateX(-${this.position*this._pxWidth}px)`
+		if (this.position > this.length-1){
+			if(this.animation === "fade"){this.position = 0}
+			else{this.quickMoveToFirst()}
+		}
+		if (this.position < 0){
+			if(this.animation === "fade"){this.position = this.length -1}
+			else{this.quickMoveToLast()}
+		}
+		if(this.animation === "fade"){
+			Array.from(this.slidesTape.children).forEach(slide => slide.style.opacity = 0)
+			this.slidesTape.children[this.position].style.opacity = 1
+		}
+		else{this.slidesTape.style.transform = `translateX(-${this.position*this._pxWidth}px)`}
+
 		this.updateCommands()
+
+		if (this.pauseTiming){
+			if(this.timeOutID){clearTimeout(this.timeOutID)}
+			this.timeOutID = setTimeout(() => this.showSlide(this.position+1), this.pauseTiming)
+		}
 	}
 
-	quickMoveToFirst(x){
+	quickMoveToFirst(){
 		let newSlide = document.createElement("div")
 		newSlide.className="slide"
 		let slideClone = this.children[0].cloneNode(true)
@@ -120,6 +164,11 @@ class Slider{
 		)
 	}
 
+	touchEnd(e, slider){
+		let deltaX = slider.touchesX - e.changedTouches[0].pageX
+		if(deltaX >= 5){slider.showSlide(slider.position+1)}
+		else if(deltaX <= 5){slider.showSlide(slider.position-1)}
+	}
 
 	initiate(){
 		if(this.wrapper !== null){
