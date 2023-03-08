@@ -1,3 +1,5 @@
+/* Elegant Slider v0.5 */
+
 class Slider{
 	
 	constructor(node, options){
@@ -17,8 +19,8 @@ class Slider{
 			this.children = Array.from(this.wrapper.children);
 			this.slidesTape = document.createElement("div");
 
-			this.wrapper.addEventListener("touchstart", e => this.touchesX = e.touches[0].pageX)
-			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this))
+			this.wrapper.addEventListener("touchstart", e => this.touchesX = e.touches[0].pageX, {passive: true})
+			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this), {passive: true})
 			this.touchesX = 0
 		}
 		catch(e){console.warn("Please select a valid node"); console.log(e)}
@@ -74,7 +76,6 @@ class Slider{
 			this.dotLine.className = "slideDotLine"
 			for (let i = 0 ; i < this.length ; i++){
 				let dot = document.createElement("span")
-				dot.innerText = "○"
 				dot.addEventListener("click", () =>{this.showSlide(i)})
 				this.dotLine.appendChild(dot)
 				}
@@ -85,7 +86,7 @@ class Slider{
 	}
 
 	updateCommands(){
-		if(!this.infiniteCycle){
+		if(!this.infiniteCycle && this.showArrows){
 			this.previousButton.style.opacity = !this.position ? 0:1;
 			this.nextButton.style.opacity = !!(this.position == this.length-1) ? 0:1
 		}
