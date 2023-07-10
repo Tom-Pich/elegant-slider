@@ -37,7 +37,4 @@ I tried my best to make it simple, robust and light-weighted.
 v0.5 : fixed bug when showArrows = false  
 v0.6 : improvement on z-index with fade animation  
 v0.7 : choice between dots and lines for dotLines content
-v1.0 : resize slider dynamicly on window resize event
-
-### Known bug
-Slider dynamic resizing
+v1.0 : resize slider dynamicly on window resize event  
