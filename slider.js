@@ -14,6 +14,7 @@ class Slider{
 			this.infiniteCycle = options.infiniteCycle || false;
 			this.showArrows = options.showArrows ?? true;
 			this.showDots = options.showDots === undefined ? true : options.showDots;
+			this.dotStyle = options.dotSyle === undefined ? "dots" : options.dotStyle
 
 			this.length = this.wrapper.children.length;
 			this.children = Array.from(this.wrapper.children);
@@ -22,6 +23,17 @@ class Slider{
 			this.wrapper.addEventListener("touchstart", e => this.touchesX = e.touches[0].pageX, {passive: true})
 			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this), {passive: true})
 			this.touchesX = 0
+
+			//resizing slider after window resize
+			window.addEventListener("resize", () => {
+				this._pxWidth = this.wrapper.getBoundingClientRect().width;
+				this._pxHeight = this.height ? this._pxWidth*this.height/100 : "" ;
+				this.wrapper.style.height = `${this._pxHeight}px`
+
+				if(this.animation !== "fade"){
+					this.slidesTape.style.transform = `translateX(-${this.position*this._pxWidth}px)`
+			}
+			})
 		}
 		catch(e){console.warn("Please select a valid node"); console.log(e)}
 	}
@@ -33,7 +45,6 @@ class Slider{
 		this.wrapper.style.width = this.width;
 		this._pxWidth = this.wrapper.getBoundingClientRect().width;
 		this._pxHeight = this.height ? this._pxWidth*this.height/100 : "" ;
-		//if(!this._pxHeight && this.animation === "fade"){this._pxHeight = "250"}
 		this.wrapper.style.height = `${this._pxHeight}px`
 		if(!["relative", "absolute", "fixed"].includes(getComputedStyle(this.wrapper).position)){this.wrapper.style.position = "relative"}
 
@@ -76,6 +87,7 @@ class Slider{
 			this.dotLine.className = "slideDotLine"
 			for (let i = 0 ; i < this.length ; i++){
 				let dot = document.createElement("span")
+				dot.innerText = "–"
 				dot.addEventListener("click", () =>{this.showSlide(i)})
 				this.dotLine.appendChild(dot)
 				}
@@ -92,8 +104,20 @@ class Slider{
 		}
 
 		if(this.showDots){
-			Array.from(this.dotLine.children).forEach(dot => dot.innerText = "○")
-			try{this.dotLine.children[this.position].innerHTML="&#x25CF;"}
+			Array.from(this.dotLine.children).forEach(dot => {
+				if(this.dotStyle === "lines"){
+					dot.innerHTML = `
+					<svg width="64" height="15" viewBox="0 0 64 15">
+						<path d="m2.5 5h58" style="stroke-linecap:round;stroke-width:4;stroke:#fff5"/>
+					</svg>`}
+				else {dot.innerHTML="○"}
+			}
+			)
+			try{this.dotLine.children[this.position].innerHTML= this.dotStyle === "lines" ? `
+				<svg width="128" height="15" viewBox="0 0 128 15">
+					<path d="m2.5 5h123" style="stroke-linecap:round;stroke-width:4;stroke:#fff"/>
+				</svg>` : "●"
+			}
 			catch(e){}
 		}
 	}
@@ -113,8 +137,12 @@ class Slider{
 			else{this.quickMoveToLast()}
 		}
 		if(this.animation === "fade"){
-			Array.from(this.slidesTape.children).forEach(slide => slide.style.opacity = 0)
+			Array.from(this.slidesTape.children).forEach(slide => {
+				slide.style.opacity = 0
+				slide.style.zIndex = 0
+			})
 			this.slidesTape.children[this.position].style.opacity = 1
+			this.slidesTape.children[this.position].style.zIndex = 1
 		}
 		else{this.slidesTape.style.transform = `translateX(-${this.position*this._pxWidth}px)`}
 
@@ -167,8 +195,8 @@ class Slider{
 
 	touchEnd(e, slider){
 		let deltaX = slider.touchesX - e.changedTouches[0].pageX
-		if(deltaX >= 5){slider.showSlide(slider.position+1)}
-		else if(deltaX <= 5){slider.showSlide(slider.position-1)}
+		if(deltaX >= 25){slider.showSlide(slider.position+1)}
+		else if(deltaX <= -25){slider.showSlide(slider.position-1)}
 	}
 
 	initiate(){
