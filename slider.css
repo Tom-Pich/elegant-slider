@@ -1,15 +1,30 @@
-.sliderWrapper {overflow: hidden; display: flex !important;}
+/* sliderWrapper wraps all slider. You can change width and aspect-ratio */
+.sliderWrapper {
+	overflow: hidden; aspect-ratio: var(--aspect-ratio); width: var(--slider-width);
+	--slider-width: 100%;
+	--aspect-ratio: 16/9;
+}
 
-.sliderButton {position: absolute; cursor: pointer; font-size: 2rem; top: 50%; transform: translateY(-50%); background-color: #fff6; padding: 0 10px 10px 10px;}
-.sliderButton.previous {left: 0}
-.sliderButton.next {right: 0}
+/* slidesTape wraps all the slides and is responsible for animation */
+.slidesTape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate;}
+.animated {transition: all var(--animation-duration) ease-in-out;}
 
-.slideDotLine {position: absolute; background-color: #fff6; bottom: 0; left: 50%; translate: -50% 0; font-size: 2rem; padding: 0 1em; line-height: 1em}
-.slideDotLine > span {cursor: pointer;}
+/* slide wraps all slide content */
+.slide {height: 100%; width: 100%; min-width: 100%; display: flex; align-items: center; transition: inherit;}
+.opacity-transition .slide {position: absolute;}
 
-.slidesTape {display: flex; width: 100%; height: 100%; transition-timing-function: ease-in-out; align-items: center; isolation: isolate;}
-
-.slide {height: 100%; width: 100%; min-width: 100%; display: flex; align-items: center;}
-.opacity-transition .slide {position: absolute; transition-timing-function: ease-in-out}
-
+/* This is about slide direct child i.e slide content. Don't mess with it unless you know what you do. */
 .slide > * {display: block; max-width: 100%; max-height: 100%; margin: 0 auto;}
+
+
+/* Commands */
+.sliderButton {position: absolute; cursor: pointer; font-size: 2rem; top: 50%; transform: translateY(-50%); background-color: #fff6; padding: 0 .25em;}
+.sliderButton.previous {left: 0}
+.sliderButton.previous::before {content:"\2039"}
+.sliderButton.next {right: 0}
+.sliderButton.next::before {content: "\203A"}
+
+.slideDotLine {position: absolute; background-color: #fff6; bottom: 0; left: 50%; translate: -50% 0; font-size: 1.5rem; padding: 0 1em; line-height: 1em; display: flex; gap: .5em;}
+.slideDotLine > div {cursor: pointer; transition-duration: var(--animation-duration);}
+.slideDotLine > div::before {content: "\25cb";} /* white circle */
+.slideDotLine > div.active::before {content: "\25cf"; font-size: 1.8rem} /* black circle */
