@@ -1,30 +1,50 @@
-/* sliderWrapper wraps all slider. You can change width and aspect-ratio */
-.sliderWrapper {
-	overflow: hidden; aspect-ratio: var(--aspect-ratio); width: var(--slider-width);
-	--slider-width: 100%;
-	--aspect-ratio: 16/9;
+/* sliderWrapper wraps all slider.
+   Do not add padding to this. Add padding directly to slides.
+*/
+.slider-wrapper {
+	overflow: hidden; position: relative;
+	/* provide height or aspect-ratio if fade transition due to absolute positioning of slides */
+
+	height: 10em; /* To see the slider if you didn’t provide an height – you can delete it */
+	border: .5px solid grey; /* To see slider limits when impleminting it – you can delete it */
 }
 
-/* slidesTape wraps all the slides and is responsible for animation */
-.slidesTape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate;}
+/* slidesTape wraps all the slides and is responsible for animation
+   Do not add padding to this. Add padding directly to slides.
+   The animated class is applied by JS to the slides tape. Do not modify it
+*/
+.slides-tape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate;}
 .animated {transition: all var(--animation-duration) ease-in-out;}
 
-/* slide wraps all slide content */
-.slide {height: 100%; width: 100%; min-width: 100%; display: flex; align-items: center; transition: inherit;}
-.opacity-transition .slide {position: absolute;}
-
-/* This is about slide direct child i.e slide content. Don't mess with it unless you know what you do. */
-.slide > * {display: block; max-width: 100%; max-height: 100%; margin: 0 auto;}
+/* slide wraps all slide content
+   Do not remove the property here. You can add some, though we recommand to apply
+   them in other classes
+*/
+.slide {flex: 0 0 100%; height: 100%; transition: inherit;}
+.fade-transition .slide {position: absolute;}
+.fade-transition .slide:not(:first-child){opacity: 0;}
 
 
 /* Commands */
-.sliderButton {position: absolute; cursor: pointer; font-size: 2rem; top: 50%; transform: translateY(-50%); background-color: #fff6; padding: 0 .25em;}
-.sliderButton.previous {left: 0}
-.sliderButton.previous::before {content:"\2039"}
-.sliderButton.next {right: 0}
-.sliderButton.next::before {content: "\203A"}
+.slider-button {
+	/* Position: you should keep that this way */
+	position: absolute; top: 50%; transform: translateY(-50%);
+	/* Properties below can be modified */
+	cursor: pointer; font-size: 2rem; background-color: #fff6; padding: 0 .25em;
+}
+.slider-button.previous {left: 0}
+.slider-button.previous::before {content:"\2039"}
+.slider-button.next {right: 0}
+.slider-button.next::before {content: "\203A"}
 
-.slideDotLine {position: absolute; background-color: #fff6; bottom: 0; left: 50%; translate: -50% 0; font-size: 1.5rem; padding: 0 1em; line-height: 1em; display: flex; gap: .5em;}
-.slideDotLine > div {cursor: pointer; transition-duration: var(--animation-duration);}
-.slideDotLine > div::before {content: "\25cb";} /* white circle */
-.slideDotLine > div.active::before {content: "\25cf"; font-size: 1.8rem} /* black circle */
+.slide-dot-line {
+	/* Position: you should keep that this way */
+	position: absolute; left: 50%; translate: -50% 0; display: flex;
+	/* You can tune this position parameters */
+	bottom: 0;  gap: .5em;
+	/* Properties below can be modified */
+	background-color: #fff6; font-size: 1.5rem; padding: 0 1em; line-height: 1em;
+}
+.slide-dot-line > div {cursor: pointer; transition-duration: var(--animation-duration);}
+.slide-dot-line > div::before {content: "\25cb";} /* white circle */
+.slide-dot-line > div.active::before {content: "\25cf";} /* black circle */
