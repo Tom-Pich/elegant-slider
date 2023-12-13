@@ -44,8 +44,12 @@ class Slider {
 	generateCommands() {
 		if (this.showArrows) {
 			this.previousButton = create("div", "slider-button previous");
+			this.previousButton.setAttribute("aria-role", "button");
+			this.previousButton.setAttribute("aria-label", "Précédent");
 			this.previousButton.addEventListener("click", () => this.showSlide(this.position - 1))
 			this.nextButton = create("div", "slider-button next");
+			this.nextButton.setAttribute("aria-role", "button");
+			this.nextButton.setAttribute("aria-label", "Suivant");
 			this.nextButton.addEventListener("click", () => this.showSlide(this.position + 1))
 			this.wrapper.append(this.nextButton, this.previousButton)
 		}
@@ -53,7 +57,9 @@ class Slider {
 		if (this.showDots) {
 			this.dotLine = create("div", "slide-dot-line")
 			for (let i = 1; i <= this.length; i++) {
-				let dot = document.createElement("div")
+				const dot = document.createElement("div")
+				dot.setAttribute("aria-role", "button");
+				dot.setAttribute("aria-label", "slide " + i )
 				dot.addEventListener("click", () => { this.showSlide(i) })
 				this.dotLine.appendChild(dot)
 			}
@@ -132,7 +138,7 @@ class Slider {
 	}
 }
 
-function createSlider(node, options = {}) {
+export function createSlider(node, options = {}) {
 	let slider = new Slider(node, options)
 	slider.initiate()
 }

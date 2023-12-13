@@ -1,4 +1,4 @@
-# Elegant Slider v3.0
+# Elegant Slider v3.1
 
 This JS/CSS module will generate a slider. You can choose bewteen translate and fade animation and provide some other optionnal values. Clean infinite looping possible.  
 Compatible with touch events.    
@@ -47,3 +47,4 @@ v1.1 : delegate width and aspect ratio to CSS.
 v1.2 : minor code improvements  
 v2.0 : algorithm change for infinite looping  
 v3.0 : HTML structure pre-writted to avoid flash on load. While JS is not loaded, the first slide will be correctly displayed.
+v3.1 : accessibility improvment (aria-role and aria-label on JS generated commands)
