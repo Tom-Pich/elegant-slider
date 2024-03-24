@@ -1,6 +1,6 @@
-# Elegant Slider v3.1
+# Elegant Slider v3.2
 
-This JS/CSS module will generate a slider. You can choose bewteen translate and fade animation and provide some other optionnal values. Clean infinite looping possible.  
+This JS/CSS module will generate a slider. You can choose between translate and fade animation and provide some other optionnal values. Clean infinite looping possible.  
 Compatible with touch events.    
 I tried my best to make it simple, robust and light-weighted (3.4kB for minified JS, 1.0 kB for minified CSS).  
 It’s not minified though, so that you can tune it if you need to.
@@ -18,7 +18,8 @@ The structure is quite classic: an external wrapper, an internal wrapper that is
 	</div>
 </div>
 ```
-2. import `slider.js` and `slider.css` files into your HTML page.
+2. import `slider.js` and `slider.css` files into your HTML page.  
+   See .slider-wrapper in CSS : make sure to set the height the way you need and delete the grey borders.
 3. execute function `createSlider(node, options)`
 
 - `node` is the HTML node that will be displayed as slider (with .slider-wrapper).
@@ -33,6 +34,7 @@ The structure is quite classic: an external wrapper, an internal wrapper that is
 	infiniteCycle: infinite loop between slides (boolean. Default = false),
 	showArrows: show navigation arrows (boolean. Default = true),
 	showDots: show navgation dots (boolean. Default = true),
+	showSlideNumber : show slide number, eg. 2/15 instead of dots (boolean. Default = false). Prevails on showDots option
 }
 ```
 ## Notes
@@ -47,4 +49,5 @@ v1.1 : delegate width and aspect ratio to CSS.
 v1.2 : minor code improvements  
 v2.0 : algorithm change for infinite looping  
 v3.0 : HTML structure pre-writted to avoid flash on load. While JS is not loaded, the first slide will be correctly displayed.
-v3.1 : accessibility improvment (aria-role and aria-label on JS generated commands)
+v3.1 : accessibility improvements (aria-role and aria-label on JS generated commands)
+v3.2 : minor improvment + show slide number option (like 2/15).

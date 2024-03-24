@@ -48,3 +48,9 @@
 .slide-dot-line > div {cursor: pointer; transition-duration: var(--animation-duration);}
 .slide-dot-line > div::before {content: "\25cb";} /* white circle */
 .slide-dot-line > div.active::before {content: "\25cf";} /* black circle */
+
+.slide-number-wrapper {
+	position: absolute; left: 50%; translate: -50% 0;
+	bottom: 0;
+	background-color: #fff6; font-size: 1.5rem; padding: 0 1em; line-height: 1em;
+}

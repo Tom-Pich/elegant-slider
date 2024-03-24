@@ -1,4 +1,4 @@
-function create(element, className) {
+export function create(element, className) {
 	let node = document.createElement(element);
 	node.className = className;
 	return node;
@@ -17,11 +17,18 @@ class Slider {
 			this.infiniteCycle = options.infiniteCycle || false;
 			this.showArrows = options.showArrows ?? true;
 			this.showDots = options.showDots === undefined ? true : options.showDots;
+			this.showSlideNumber = options.showSlideNumber === undefined ? false : options.showSlideNumber;
 
 			this.length = this.slidesTape.children.length;
 			this.children = Array.from(this.slidesTape.children);
 
-			this.wrapper.addEventListener("touchstart", e => this.touchesX = e.touches[0].pageX, { passive: true })
+			// slide number prevails on dots
+			this.showDots = this.showSlideNumber ? false : this.showDots;
+
+			this.wrapper.addEventListener("touchstart", e => {
+				e.preventDefault(); // avoid screen movement when sliding
+				this.touchesX = e.touches[0].pageX, { passive: true }
+			})
 			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this), { passive: true })
 			this.touchesX = 0
 
@@ -44,11 +51,11 @@ class Slider {
 	generateCommands() {
 		if (this.showArrows) {
 			this.previousButton = create("div", "slider-button previous");
-			this.previousButton.setAttribute("aria-role", "button");
+			this.previousButton.setAttribute("role", "button");
 			this.previousButton.setAttribute("aria-label", "Précédent");
 			this.previousButton.addEventListener("click", () => this.showSlide(this.position - 1))
 			this.nextButton = create("div", "slider-button next");
-			this.nextButton.setAttribute("aria-role", "button");
+			this.nextButton.setAttribute("role", "button");
 			this.nextButton.setAttribute("aria-label", "Suivant");
 			this.nextButton.addEventListener("click", () => this.showSlide(this.position + 1))
 			this.wrapper.append(this.nextButton, this.previousButton)
@@ -58,12 +65,18 @@ class Slider {
 			this.dotLine = create("div", "slide-dot-line")
 			for (let i = 1; i <= this.length; i++) {
 				const dot = document.createElement("div")
-				dot.setAttribute("aria-role", "button");
+				dot.setAttribute("role", "button");
 				dot.setAttribute("aria-label", "slide " + i )
 				dot.addEventListener("click", () => { this.showSlide(i) })
 				this.dotLine.appendChild(dot)
 			}
 			this.wrapper.appendChild(this.dotLine)
+		}
+
+		if (this.showSlideNumber){
+			this.slideNumberWrapper = create("div", "slide-number-wrapper");
+			//this.slideNumberWrapper.innerText = "Hello slide number";
+			this.wrapper.appendChild(this.slideNumberWrapper);
 		}
 	}
 
@@ -84,6 +97,12 @@ class Slider {
 				Array.from(this.dotLine.children).forEach(dot => { dot.classList.remove("active") })
 				this.dotLine.children[activeDotIndex].classList.add("active");
 			}, this.animationTiming / 2)
+		}
+
+		if (this.showSlideNumber){
+			let position = Math.max(1, this.position);
+			position = Math.min(this.length, position)
+			this.slideNumberWrapper.innerText = `${position}/${this.length}`
 		}
 	}
 
