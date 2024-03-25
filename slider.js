@@ -25,6 +25,7 @@ class Slider {
 			// slide number prevails on dots
 			this.showDots = this.showSlideNumber ? false : this.showDots;
 
+			// touch related event
 			this.wrapper.addEventListener("touchstart", e => {
 				e.preventDefault(); // avoid screen movement when sliding
 				this.touchesX = e.touches[0].pageX, { passive: true }
@@ -34,6 +35,9 @@ class Slider {
 
 			//resizing slider after window resize
 			window.addEventListener("resize", () => { this.showSlide(this.position) })
+			
+			// custom event slideChange, fired when showSlide is executed. event.detail gives active slide number
+			this.slideChangeEvent = new CustomEvent('slideChange', { detail: this.position });
 		}
 		catch (e) { console.warn("Please select a valid node for Elegant Slider") }
 	}
@@ -75,7 +79,6 @@ class Slider {
 
 		if (this.showSlideNumber){
 			this.slideNumberWrapper = create("div", "slide-number-wrapper");
-			//this.slideNumberWrapper.innerText = "Hello slide number";
 			this.wrapper.appendChild(this.slideNumberWrapper);
 		}
 	}
@@ -140,6 +143,10 @@ class Slider {
 			if (this.timeOutID) { clearTimeout(this.timeOutID) }
 			this.timeOutID = setTimeout(() => this.showSlide(this.position + 1), this.pauseTiming - (isAnimated ? 0 : this.animationTiming))
 		}
+		
+		// custom slideChange event
+		this.slideChangeEvent = new CustomEvent('slideChange', { detail: this.position });
+		this.wrapper.dispatchEvent(this.slideChangeEvent);
 	}
 
 	touchEnd(e, slider) {
@@ -158,6 +165,9 @@ class Slider {
 }
 
 export function createSlider(node, options = {}) {
-	let slider = new Slider(node, options)
+	const slider = new Slider(node, options)
 	slider.initiate()
+
+	// return slider so that it can be controlled from outside
+	return slider
 }
