@@ -1,4 +1,4 @@
-export function create(element, className) {
+function create(element, className) {
 	let node = document.createElement(element);
 	node.className = className;
 	return node;
@@ -26,20 +26,34 @@ class Slider {
 			this.showDots = this.showSlideNumber ? false : this.showDots;
 
 			// touch related event
-			this.wrapper.addEventListener("touchstart", e => {
-				e.preventDefault(); // avoid screen movement when sliding
-				this.touchesX = e.touches[0].pageX, { passive: true }
+			this.wrapper.addEventListener("touchmove", (e) => {
+				const twoFingerTouches = e.touches.length > 1;
+				// avoid default behavior with single finger (mouve screen)
+				if(!twoFingerTouches){
+					e.preventDefault()
+				}
 			})
+
+			this.wrapper.addEventListener("touchstart", e => {
+				const twoFingerTouches = e.touches.length > 1;
+				if(twoFingerTouches){
+					// cancel action if two fingers touch – default zoom action instead
+					this.touchesX = null, { passive: true }
+				} else {
+					this.touchesX = e.touches[0].pageX, { passive: true }
+				}
+			})
+
 			this.wrapper.addEventListener("touchend", e => this.touchEnd(e, this), { passive: true })
 			this.touchesX = 0
 
 			//resizing slider after window resize
-			window.addEventListener("resize", () => { this.showSlide(this.position) })
+			window.addEventListener("resize", () => { this.showSlide(this.position, false) })
 			
 			// custom event slideChange, fired when showSlide is executed. event.detail gives active slide number
 			this.slideChangeEvent = new CustomEvent('slideChange', { detail: this.position });
 		}
-		catch (e) { console.warn("Please select a valid node for Elegant Slider") }
+		catch (e) { console.warn("Please select a valid node as slider wrapper") }
 	}
 
 
@@ -150,6 +164,7 @@ class Slider {
 	}
 
 	touchEnd(e, slider) {
+		if (slider.touchesX === null) return
 		let deltaX = slider.touchesX - e.changedTouches[0].pageX
 		if (deltaX >= 50) { slider.showSlide(slider.position + 1) }
 		else if (deltaX <= -50) { slider.showSlide(slider.position - 1) }

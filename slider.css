@@ -18,7 +18,8 @@
 
 /* slide wraps all slide content
    Do not remove the property here. You can add some, though we recommand to apply
-   them in other classes
+   them in other classes.
+   If you need commands to be outside the slide content, please use padding on .slide for that
 */
 .slide {flex: 0 0 100%; height: 100%; transition: inherit;}
 .fade-transition .slide {position: absolute;}
