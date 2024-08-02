@@ -5,7 +5,7 @@
  *
  * Copyright 2020-2024 Thomas Pichegru
  *
- * Released under the MIT License
+ * Released under the GNU License
  *
  * Released on: 2024-08-02
  */
