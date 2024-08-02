@@ -1,8 +1,8 @@
-# Elegant Slider v4.2
+# Elegant Slider v5.0
 
 This JS/CSS module will generate a slider. You can choose between *translate* and *fade* animations and provide some other optionnal values. Clean infinite looping possible.  
 Compatible with touch events.    
-I tried my best to make it simple, robust and light-weighted (3.4kB for minified JS, 1.0 kB for minified CSS).  
+I tried my best to make it simple, robust and light-weighted (4.4kB for minified JS, 1.0 kB for minified CSS).  
 It’s not minified though, so that you can tune it if you need to.
 
 The structure is quite classic: an external wrapper, an internal wrapper that is responsible for slides animation, and the slides.
@@ -10,7 +10,7 @@ The structure is quite classic: an external wrapper, an internal wrapper that is
 It has a `slideChange` event, and can be manipulated from outside (like `slider.showSlide(3)`)
 
 ## Steps
-1. Copy and paste this HTML structure in your page. if you want a _fade_ animation (instead of default _translation_ animation), add 'fade-transition' class to 'slides-tape'
+1. Copy and paste this HTML structure in your page. if you want a _fade_ animation (instead of default _translation_ animation), add 'fade-transition' class to 'slides-tape'. Keep these minimal CSS classes below.
 ```
 <div class="slider-wrapper">
 	<div class="slides-tape"> <!-- add fade-transition class if needed -->
@@ -20,10 +20,14 @@ It has a `slideChange` event, and can be manipulated from outside (like `slider.
 	</div>
 </div>
 ```
-2. import `slider.js` and `slider.css` files into your HTML page.  
-   Please check `.slider-wrapper` class in CSS : make sure to set the height the way you need and delete the grey borders.
-3. execute function `createSlider(node, options)`
-4. _optionnal_ : if you need to control the slider from external commands (like thumb images), use `let my_slider = createSlider(node, options)`. This way, you can execute slider commands from outside (typically `my_slider.showSlide(x)`)
+2. use `slider.css` file into your HTML page, either by copy-pasting it’s content on your own CSS file, or using a `<link>` tag. 
+3. In a module script, write the following :
+```
+import createSlider from './path/to/slider.js'
+const mySliderWrapper = document.querySelector('.my-selector')
+const mySlider = createSlider( mySliderWrapper, { /* options */} )
+```
+4. _optionnal_ : if you need to control the slider from external commands (like thumb images), use `const mySlider = createSlider(node, options)`. This way, you can execute slider commands from outside (typically `my_slider.showSlide(x)`)
 
 - `node` is the HTML node that will be displayed as slider (with `.slider-wrapper` class).
 - `options` is an object with the following elements. If not given to the function, it will use default values (see below).
@@ -55,4 +59,5 @@ v3.1 : accessibility improvements (aria-role and aria-label on JS generated comm
 v3.2 : minor improvment + show slide number option (like 2/15).  
 v4.0 : `createSlider` function returns the slider object, so it can be manipulated by external code. `changeSlide` event is fired when active slide changes. `event.detail` provide the new active slide number.  
 v4.1 : minor bug correction (allow touch event on arrows and dots)
-v4.2 : better handling two fingers zoom event on touch screen
+v4.2 : better handling two fingers zoom event on touch screen  
+v5.0 : improved touch events handling. Minor CSS improvments

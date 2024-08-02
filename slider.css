@@ -3,10 +3,7 @@
 */
 .slider-wrapper {
 	overflow: hidden; position: relative;
-	/* provide height or aspect-ratio if fade transition due to absolute positioning of slides */
-
-	height: 10em; /* To see the slider if you didn’t provide an height – you can delete it */
-	border: .5px solid grey; /* To see slider limits when impleminting it – you can delete it */
+	min-height: 10em; /* provide height or aspect-ratio if fade transition due to absolute positioning of slides */
 }
 
 /* slidesTape wraps all the slides and is responsible for animation
@@ -17,12 +14,11 @@
 .animated {transition: all var(--animation-duration) ease-in-out;}
 
 /* slide wraps all slide content
-   Do not remove the property here. You can add some, though we recommand to apply
-   them in other classes.
+   Do not remove the property here. You can add some, though we recommand to apply them in other classes.
    If you need commands to be outside the slide content, please use padding on .slide for that
 */
 .slide {flex: 0 0 100%; height: 100%; transition: inherit;}
-.fade-transition .slide {position: absolute;}
+.fade-transition .slide {position: absolute; width: 100%;}
 .fade-transition .slide:not(:first-child){opacity: 0;}
 
 
@@ -31,7 +27,7 @@
 	/* Position: you should keep that this way */
 	position: absolute; top: 50%; transform: translateY(-50%);
 	/* Properties below can be modified */
-	cursor: pointer; font-size: 2rem; background-color: #fff6; padding: 0 .25em;
+	cursor: pointer; font-size: 4rem; padding: 0 .25em; color: white; text-shadow: 0 0 5px #0007
 }
 .slider-button.previous {left: 0}
 .slider-button.previous::before {content:"\2039"}
@@ -44,14 +40,13 @@
 	/* You can tune this position parameters */
 	bottom: 0;  gap: .5em;
 	/* Properties below can be modified */
-	background-color: #fff6; font-size: 1.5rem; padding: 0 1em; line-height: 1em;
+	/* font-size: 1.5rem; */ padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007;
 }
 .slide-dot-line > div {cursor: pointer; transition-duration: var(--animation-duration);}
 .slide-dot-line > div::before {content: "\25cb";} /* white circle */
 .slide-dot-line > div.active::before {content: "\25cf";} /* black circle */
 
 .slide-number-wrapper {
-	position: absolute; left: 50%; translate: -50% 0;
-	bottom: 0;
-	background-color: #fff6; font-size: 1.5rem; padding: 0 1em; line-height: 1em;
+	position: absolute; bottom: 0; left: 50%; translate: -50% 0;
+	padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007; font-size: 1.5em;
 }
