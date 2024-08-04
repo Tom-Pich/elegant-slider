@@ -1,4 +1,4 @@
-# Elegant Slider v5.0
+# Elegant Slider v5.2
 
 This JS/CSS module will generate a slider. You can choose between *translate* and *fade* animations and provide some other optionnal values. Clean infinite looping possible.  
 Compatible with touch events.    
@@ -60,4 +60,5 @@ v3.2 : minor improvment + show slide number option (like 2/15).
 v4.0 : `createSlider` function returns the slider object, so it can be manipulated by external code. `changeSlide` event is fired when active slide changes. `event.detail` provide the new active slide number.  
 v4.1 : minor bug correction (allow touch event on arrows and dots)
 v4.2 : better handling two fingers zoom event on touch screen  
-v5.0 : improved touch events handling. Minor CSS improvments
+v5.0 : improved touch events handling. Minor CSS improvments  
+v5.2 : minor CSS improvments

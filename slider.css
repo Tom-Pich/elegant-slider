@@ -1,32 +1,17 @@
-/* sliderWrapper wraps all slider.
-   Do not add padding to this. Add padding directly to slides.
-*/
 .slider-wrapper {
-	overflow: hidden; position: relative;
-	min-height: 10em; /* provide height or aspect-ratio if fade transition due to absolute positioning of slides */
+	overflow: hidden; position: relative; /* do not add padding */
+	min-height: 10em; /* provide height or aspect-ratio if fade transition */
 }
 
-/* slidesTape wraps all the slides and is responsible for animation
-   Do not add padding to this. Add padding directly to slides.
-   The animated class is applied by JS to the slides tape. Do not modify it
-*/
-.slides-tape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate;}
-.animated {transition: all var(--animation-duration) ease-in-out;}
+.slides-tape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate; /* do not add padding */}
+.animated {transition: all var(--animation-duration) ease-in-out; /* The animated class is applied by JS to the slides tape */}
 
-/* slide wraps all slide content
-   Do not remove the property here. You can add some, though we recommand to apply them in other classes.
-   If you need commands to be outside the slide content, please use padding on .slide for that
-*/
-.slide {flex: 0 0 100%; height: 100%; transition: inherit;}
+.slide {flex: 0 0 100%; height: 100%; transition: inherit; /* you can add padding */}
 .fade-transition .slide {position: absolute; width: 100%;}
 .fade-transition .slide:not(:first-child){opacity: 0;}
 
-
-/* Commands */
 .slider-button {
-	/* Position: you should keep that this way */
-	position: absolute; top: 50%; transform: translateY(-50%);
-	/* Properties below can be modified */
+	position: absolute; top: 50%; transform: translateY(-50%); /* Position */
 	cursor: pointer; font-size: 4rem; padding: 0 .25em; color: white; text-shadow: 0 0 5px #0007
 }
 .slider-button.previous {left: 0}
@@ -35,12 +20,8 @@
 .slider-button.next::before {content: "\203A"}
 
 .slide-dot-line {
-	/* Position: you should keep that this way */
-	position: absolute; left: 50%; translate: -50% 0; display: flex;
-	/* You can tune this position parameters */
-	bottom: 0;  gap: .5em;
-	/* Properties below can be modified */
-	/* font-size: 1.5rem; */ padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007;
+	position: absolute; left: 50%; bottom: 0; translate: -50% 0; display: flex; /* Position */
+	gap: .5em; padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007;
 }
 .slide-dot-line > div {cursor: pointer; transition-duration: var(--animation-duration);}
 .slide-dot-line > div::before {content: "\25cb";} /* white circle */

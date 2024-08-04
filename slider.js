@@ -1,5 +1,5 @@
 /**
- * Elegant Slider 5.0
+ * Elegant Slider 5.2
  * A Very Lightweight Slider
  * https://www.situp-webcreation.com
  *
@@ -53,7 +53,7 @@ class Slider {
       // custom event slideChange, fired when showSlide is executed. event.detail gives active slide number
       this.slideChangeEvent = new CustomEvent("slideChange", { detail: this.position });
     } catch (e) {
-      console.warn("Please select a valid node as slider wrapper");
+      console.warn("Please select a valid node");
     }
   }
 
@@ -101,8 +101,8 @@ class Slider {
 
   updateCommands() {
     if (!this.infiniteCycle && this.showArrows) {
-      this.previousButton.style.opacity = this.position === 1 ? 0 : 1;
-      this.nextButton.style.opacity = this.position === this.length ? 0 : 1;
+      this.previousButton.hidden = this.position === 1;
+      this.nextButton.hidden = this.position === this.length;
     }
 
     if (this.showDots) {
