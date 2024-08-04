@@ -33,14 +33,15 @@ const mySlider = createSlider( mySliderWrapper, { /* options */} )
 - `options` is an object with the following elements. If not given to the function, it will use default values (see below).
 
 ## Options
+The given values are default values. If they suit your needs, you don’t need to specify them.
 ```
 {  
-	animationTiming: animation duration in ms (int. Default = 200),
-	pauseTiming: slide display duration in ms (int. Defaut = 0, manual switch between slides),
-	infiniteCycle: infinite loop between slides (boolean. Default = false),
-	showArrows: show navigation arrows (boolean. Default = true),
-	showDots: show navgation dots (boolean. Default = true),
-	showSlideNumber : show slide number, eg. 2/15 instead of dots (boolean. Default = false). Prevails on showDots option
+	animationTiming: 200, // animation duration in ms (int),
+	pauseTiming: 0,// slide display duration in ms (int, 0 → manual switch between slides),
+	infiniteCycle: false, // infinite loop between slides (bool),
+	showArrows: true, // show navigation arrows (bool),
+	showDots: true, // show navgation dots (bool),
+	showSlideNumber: false, // show slide number, eg. 2/15 instead of dots (bool). Prevails on showDots option
 }
 ```
 ## Notes
