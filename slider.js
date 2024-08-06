@@ -1,5 +1,5 @@
 /**
- * Elegant Slider 5.2
+ * Elegant Slider 5.2.1
  * A Very Lightweight Slider
  * https://www.situp-webcreation.com
  *
@@ -192,18 +192,17 @@ class Slider {
 
   touchMove(e) {
     if (this.touchesX === null || this.touchesY === null) return;
-
     const deltaX = e.touches[0].pageX - this.touchesX;
     const deltaY = e.touches[0].pageY - this.touchesY;
 
     if (Math.abs(deltaX) >= Math.abs(deltaY)) this.horizontalSwipe = true;
-	else this.verticalSwipe = true;
+	else {this.verticalSwipe = true;}
 
     if (this.horizontalSwipe && ! this.verticalSwipe) {
       e.preventDefault(); // Prevent vertical scrolling
 	  this.slidesTape.classList.remove("animated"); // follow horizontal swipe instantaneously
 	  const offset = -(this.position * this._pxWidth);
-	  if (! this.animation === "fade" )  this.slidesTape.style.transform = `translateX(${ offset + deltaX}px)`;
+	  if (this.animation !== "fade")  this.slidesTape.style.transform = `translateX(${ offset + deltaX}px)`;
     }
   }
 

@@ -37,7 +37,7 @@ The given values are default values. If they suit your needs, you don’t need t
 ```
 {  
 	animationTiming: 200, // animation duration in ms (int),
-	pauseTiming: 0,// slide display duration in ms (int, 0 → manual switch between slides),
+	pauseTiming: 0 // slide display duration in ms (int, 0 → manual switch between slides),
 	infiniteCycle: false, // infinite loop between slides (bool),
 	showArrows: true, // show navigation arrows (bool),
 	showDots: true, // show navgation dots (bool),
