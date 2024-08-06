@@ -55,7 +55,7 @@ v1.0 : resize slider dynamically on window resize event
 v1.1 : delegate width and aspect ratio to CSS.  
 v1.2 : minor code improvements  
 v2.0 : algorithm change for infinite looping  
-v3.0 : HTML structure pre-writted to avoid flash on load. While JS is not loaded, the first slide will be correctly displayed.
+v3.0 : HTML structure pre-writted to avoid flash on load. While JS is not loaded, the first slide will be correctly displayed.  
 v3.1 : accessibility improvements (aria-role and aria-label on JS generated commands)  
 v3.2 : minor improvment + show slide number option (like 2/15).  
 v4.0 : `createSlider` function returns the slider object, so it can be manipulated by external code. `changeSlide` event is fired when active slide changes. `event.detail` provide the new active slide number.  
