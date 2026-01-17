@@ -1,18 +1,25 @@
+/* version 6.3 */
+/* .slides-tape : removed { width: 100%; height: 100%; align-items: center; } */
+/* .slide: removed { height: 100%; } */
+/* .fade-transition .slide: removed { width: 100%; } */
 .slider-wrapper {
+	--commands-clr: white;
+	--commands-shadow: 0 0 5px #0007;
+	--slide-width: 100%;
 	overflow: hidden; position: relative; /* do not add padding */
 	min-height: 10em; /* provide height or aspect-ratio if fade transition */
 }
 
-.slides-tape {display: flex; width: 100%; height: 100%; align-items: center; isolation: isolate; /* do not add padding */}
-.animated {transition: all var(--animation-duration) ease-in-out; /* The animated class is applied by JS to the slides tape */}
+.slides-tape {display: flex; isolation: isolate; } /* do not add padding */
+.animated {transition: all var(--animation-duration) ease-in-out; } /* This class is applied by JS to the slides tape */
 
-.slide {flex: 0 0 100%; height: 100%; transition: inherit; /* you can add padding */}
-.fade-transition .slide {position: absolute; width: 100%;}
-.fade-transition .slide:not(:first-child){opacity: 0;}
+.slide {flex: 0 0 var(--slide-width); transition: inherit; } /* you can add padding */
+.fade-transition .slide { position: absolute; }
+.fade-transition .slide:not(:first-child){ opacity: 0; }
 
 .slider-button {
 	position: absolute; top: 50%; transform: translateY(-50%); /* Position */
-	cursor: pointer; font-size: 4rem; padding: 0 .25em; color: white; text-shadow: 0 0 5px #0007
+	cursor: pointer; font-size: 4rem; padding: 0 .25em; color: var(--commands-clr); text-shadow: var(--commands-shadow)
 }
 .slider-button.previous {left: 0}
 .slider-button.previous::before {content:"\2039"}
@@ -21,13 +28,13 @@
 
 .slide-dot-line {
 	position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; /* Position */
-	gap: .5em; padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007;
+	gap: .5em; padding: .5em; line-height: 1em; color: var(--commands-clr); text-shadow: var(--commands-shadow)
 }
 .slide-dot-line > div {cursor: pointer; transition-duration: var(--animation-duration);}
-.slide-dot-line > div::before {content: "\25cb";} /* white circle */
-.slide-dot-line > div.active::before {content: "\25cf";} /* black circle */
+.slide-dot-line > div::before {content: "\25cb";} /* white circle - feel free to change */
+.slide-dot-line > div.active::before {content: "\25cf";} /* black circle - feel free to change */
 
 .slide-number-wrapper {
 	position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-	padding: .5em; line-height: 1em; color: white; text-shadow: 0 0 5px #0007; font-size: 1.5em;
+	padding: .5em; line-height: 1em; color: var(--commands-clr); text-shadow: var(--commands-shadow); font-size: 1.5em;
 }
